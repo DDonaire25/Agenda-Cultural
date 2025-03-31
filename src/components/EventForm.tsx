@@ -12,7 +12,7 @@ export default function EventForm({ initialData, onSubmit }: EventFormProps) {
     location: '',
     date: '',
     time: '',
-    responsible: '',
+    'Institution / responsible': '',
     phone: '',
     instagram: ''
   });
