@@ -12,9 +12,9 @@ export default function useEvents() {
   }, []);
 
   // Guardar en localStorage cuando cambien los eventos
-  useEffect(() => {
-    localStorage.setItem('events', JSON.stringify(events));
-  }, [events]);
+ useEffect(() => {
+  localStorage.setItem('events', JSON.stringify(events));
+}, [events]); // <-- Dependencia correcta
 
   const addEvent = (formData: EventFormData) => {
     const newEvent: Event = {
