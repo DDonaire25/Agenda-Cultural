@@ -43,3 +43,17 @@ export default function App() {
     </div>
   );
 }
+const [filter, setFilter] = useState<string>('');
+
+const filteredEvents = filter
+  ? events.filter(event => 
+      event['Institution / responsible'].toLowerCase().includes(filter.toLowerCase())
+    )
+  : events;
+
+// En el JSX:
+<input
+  type="text"
+  placeholder="Filtrar por institución"
+  onChange={(e) => setFilter(e.target.value)}
+/>
