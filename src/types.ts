@@ -5,7 +5,7 @@ export interface Event {
   location: string;
   date: string;
   time: string;
-  responsible: string;
+  Institution / responsible: string;
   phone: string;
   instagram: string;
 }
