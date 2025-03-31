@@ -1,3 +1,4 @@
+export type EventFormData = Omit<Event, 'id'>;
 export interface Event {
   id: string;
   title: string;
@@ -5,7 +6,7 @@ export interface Event {
   location: string;
   date: string;
   time: string;
-  Institution / responsible: string;
+  'Institution / responsible': string;
   phone: string;
   instagram: string;
 }
