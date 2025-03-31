@@ -18,13 +18,20 @@ function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
   }, [events]);
 
-  const handleAddEvent = (formData: EventFormData) => {
-    const newEvent: Event = {
-      ...formData,
-      id: crypto.randomUUID(),
-    };
-    setEvents((prev) => [...prev, newEvent]);
-  };
+ const [filter, setFilter] = useState<string>('');
+
+const filteredEvents = filter
+  ? events.filter(event => 
+      event['Institution / responsible'].toLowerCase().includes(filter.toLowerCase())
+    )
+  : events;
+
+// En el JSX:
+<input
+  type="text"
+  placeholder="Filtrar por institución"
+  onChange={(e) => setFilter(e.target.value)}
+/>
 
   return (
     <div className="min-h-screen bg-gray-50">
