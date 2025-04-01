@@ -41,7 +41,7 @@ export const EventForm: React.FC<EventFormProps> = ({ onSubmit, initialData, onC
         {/* Información Básica */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Título</label>
+            <label className="block text-sm font-medium text-gray-700">Nombre de la actividad</label>
             <input
               type="text"
               required
