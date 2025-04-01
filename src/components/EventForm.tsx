@@ -10,7 +10,7 @@ interface EventFormProps {
 
 export const EventForm: React.FC<EventFormProps> = ({ onSubmit, initialData, onCancel }) => {
   const [formData, setFormData] = useState<Omit<EventFormData, 'id'>>({
-    title: initialData?.title ?? '',
+    activityTame: initialData?.title ?? '',
     activityType: initialData?.activityType ?? 'taller',
     description: initialData?.description ?? '',
     category: initialData?.category ?? 'artes_escenicas',
