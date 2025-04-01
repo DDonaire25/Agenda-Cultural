@@ -1,6 +1,6 @@
 export interface EventFormData {
   id: string;
-  title: string;
+  activityName: string;
   activityType: ActivityType;
   description: string;
   category: EventCategory;
