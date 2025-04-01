@@ -1,6 +1,7 @@
-import React from 'react';
-import { Calendar, MapPin, User, Phone, Instagram, Users, Ticket, Bell } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calendar, MapPin, User, Phone, Instagram, Users, Ticket, Bell, Share2 } from 'lucide-react';
 import { EventFormData } from '../types';
+import { ShareModal } from './ShareModal';
 
 interface EventCardProps {
   event: EventFormData;
@@ -9,6 +10,8 @@ interface EventCardProps {
 }
 
 export const EventCard: React.FC<EventCardProps> = ({ event, onEdit, onDelete }) => {
+  const [showShareModal, setShowShareModal] = useState(false);
+
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleString('es-LA', {
       year: 'numeric',
@@ -51,98 +54,114 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onEdit, onDelete })
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      {event.imageUrl && (
-        <img
-          src={event.imageUrl}
-          alt={event.title}
-          className="w-full h-48 object-cover"
-        />
-      )}
-      
-      <div className="p-6">
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-900">{event.title}</h3>
-            <div className="flex flex-wrap gap-2 mt-2">
-              <span className="inline-block px-2 py-1 text-sm font-semibold text-indigo-600 bg-indigo-100 rounded-full">
-                {getCategoryName(event.category)}
-              </span>
-              <span className="inline-block px-2 py-1 text-sm font-semibold text-purple-600 bg-purple-100 rounded-full">
-                {getActivityTypeName(event.activityType)}
-              </span>
+    <>
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        {event.imageUrl && (
+          <img
+            src={event.imageUrl}
+            alt={event.title}
+            className="w-full h-48 object-cover"
+          />
+        )}
+        
+        <div className="p-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">{event.title}</h3>
+              <div className="flex flex-wrap gap-2 mt-2">
+                <span className="inline-block px-2 py-1 text-sm font-semibold text-indigo-600 bg-indigo-100 rounded-full">
+                  {getCategoryName(event.category)}
+                </span>
+                <span className="inline-block px-2 py-1 text-sm font-semibold text-purple-600 bg-purple-100 rounded-full">
+                  {getActivityTypeName(event.activityType)}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="flex space-x-2">
-            <button
-              onClick={() => onEdit(event)}
-              className="text-gray-600 hover:text-indigo-600"
-            >
-              Editar
-            </button>
-            <button
-              onClick={() => onDelete(event.id)}
-              className="text-gray-600 hover:text-red-600"
-            >
-              Eliminar
-            </button>
-          </div>
-        </div>
-
-        <p className="mt-4 text-gray-600">{event.description}</p>
-
-        <div className="mt-4 space-y-2">
-          <div className="flex items-center text-gray-600">
-            <Calendar className="w-4 h-4 mr-2" />
-            {formatDate(event.datetime)}
-            {event.reminder && (
-              <Bell className="w-4 h-4 ml-2 text-indigo-600" title="Recordatorio activado" />
-            )}
-          </div>
-
-          <div className="flex items-center text-gray-600">
-            <MapPin className="w-4 h-4 mr-2" />
-            {event.location}
-            {event.locationUrl && (
-              <a
-                href={event.locationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-2 text-indigo-600 hover:text-indigo-800"
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setShowShareModal(true)}
+                className="text-gray-600 hover:text-indigo-600"
+                title="Compartir"
               >
-                (Ver mapa)
-              </a>
-            )}
-          </div>
-
-          <div className="flex items-center text-gray-600">
-            <User className="w-4 h-4 mr-2" />
-            {event.responsibleName}
-          </div>
-
-          <div className="flex items-center text-gray-600">
-            <Phone className="w-4 h-4 mr-2" />
-            {event.contactPhone}
-          </div>
-
-          {event.socialMedia && (
-            <div className="flex items-center text-gray-600">
-              <Instagram className="w-4 h-4 mr-2" />
-              @{event.socialMedia}
+                <Share2 className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => onEdit(event)}
+                className="text-gray-600 hover:text-indigo-600"
+              >
+                Editar
+              </button>
+              <button
+                onClick={() => onDelete(event.id)}
+                className="text-gray-600 hover:text-red-600"
+              >
+                Eliminar
+              </button>
             </div>
-          )}
-
-          <div className="flex items-center text-gray-600">
-            <Users className="w-4 h-4 mr-2" />
-            {getAudienceName(event.targetAudience)}
           </div>
 
-          <div className="flex items-center text-gray-600">
-            <Ticket className="w-4 h-4 mr-2" />
-            {event.price.isFree ? 'Gratuito' : `$${event.price.amount?.toFixed(2)}`}
+          <p className="mt-4 text-gray-600">{event.description}</p>
+
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center text-gray-600">
+              <Calendar className="w-4 h-4 mr-2" />
+              {formatDate(event.datetime)}
+              {event.reminder && (
+                <Bell className="w-4 h-4 ml-2 text-indigo-600" title="Recordatorio activado" />
+              )}
+            </div>
+
+            <div className="flex items-center text-gray-600">
+              <MapPin className="w-4 h-4 mr-2" />
+              {event.location}
+              {event.locationUrl && (
+                <a
+                  href={event.locationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-2 text-indigo-600 hover:text-indigo-800"
+                >
+                  (Ver mapa)
+                </a>
+              )}
+            </div>
+
+            <div className="flex items-center text-gray-600">
+              <User className="w-4 h-4 mr-2" />
+              {event.responsibleName}
+            </div>
+
+            <div className="flex items-center text-gray-600">
+              <Phone className="w-4 h-4 mr-2" />
+              {event.contactPhone}
+            </div>
+
+            {event.socialMedia && (
+              <div className="flex items-center text-gray-600">
+                <Instagram className="w-4 h-4 mr-2" />
+                @{event.socialMedia}
+              </div>
+            )}
+
+            <div className="flex items-center text-gray-600">
+              <Users className="w-4 h-4 mr-2" />
+              {getAudienceName(event.targetAudience)}
+            </div>
+
+            <div className="flex items-center text-gray-600">
+              <Ticket className="w-4 h-4 mr-2" />
+              {event.price.isFree ? 'Gratuito' : `$${event.price.amount?.toFixed(2)}`}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {showShareModal && (
+        <ShareModal
+          event={event}
+          onClose={() => setShowShareModal(false)}
+        />
+      )}
+    </>
   );
 };
